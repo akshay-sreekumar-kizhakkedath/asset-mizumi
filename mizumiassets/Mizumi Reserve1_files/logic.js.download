@@ -1,0 +1,1534 @@
+// Toggle nav menu
+// Toggle nav menu with animation
+const menuToggle = document.getElementById("custom-menu-toggle");
+const navMenu = document.getElementById("custom-nav");
+
+menuToggle.addEventListener("click", () => {
+  navMenu.classList.toggle("active");
+});
+
+// Popup logic
+const enquireBtn = document.querySelector(".enquire-btn");
+const popup = document.getElementById("popup");
+const closeBtn = document.getElementById("closePopup");
+
+enquireBtn.addEventListener("click", () => {
+  popup.classList.add("show");
+});
+
+closeBtn.addEventListener("click", () => {
+  popup.classList.remove("show");
+});
+
+popup.addEventListener("click", (e) => {
+  if (e.target === popup) {
+    popup.classList.remove("show");
+  }
+});
+// highlights
+// Get all image cards
+const imageCards = document.querySelectorAll('.image-card');
+
+// Store original top positions
+const positions = Array.from(imageCards).map(card => {
+    const rect = card.getBoundingClientRect();
+    return rect.top + window.scrollY; // Get position relative to the document
+});
+
+// Apply scroll effect
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+
+    imageCards.forEach((card, index) => {
+        const speed = parseFloat(card.getAttribute('data-speed')); // Ensure speed is a float
+        const desiredPosition = positions[index];
+
+        // Here, we apply a scaling factor to reduce the distance of the transformation.
+        const scalingFactor = 0.5; // This value can be adjusted (between 0 and 1) to reduce the effect
+        card.style.transform = `translateY(${(scrollY - desiredPosition) * speed * scalingFactor}px)`;
+    });
+});
+// highlights mobile animation
+document.addEventListener("DOMContentLoaded", () => {
+  const highlightSection = document.querySelector(".highlights-mobile-section");
+  const highlightCards = document.querySelectorAll(".highlight-card");
+
+  const highlightObserver = new IntersectionObserver(
+    (entries, highlightObserver) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          highlightCards.forEach((card, index) => {
+            setTimeout(() => {
+              card.classList.add("animate");
+            }, index * 150); // stagger effect
+          });
+          highlightObserver.unobserve(highlightSection);
+        }
+      });
+    },
+    {
+      threshold: 0.2,
+    }
+  );
+
+  if (highlightSection) {
+    highlightObserver.observe(highlightSection);
+  }
+});
+
+// tabbed section 
+(function () {
+  const section = document.getElementById('township');
+  if (!section) return;
+
+  const tabsContainer = section.querySelector('.ts-tabs');
+  const buttons = Array.from(tabsContainer.querySelectorAll('.ts-tab-button'));
+  const indicator = tabsContainer.querySelector('.ts-tab-indicator');
+  const textContent = section.querySelector('#ts-text-content');
+  const images = Array.from(section.querySelectorAll('.ts-img'));
+
+  const content = {
+    township: {
+      text: `
+        <h2>Everything you need,<br>and more.</h2>
+        <p class="p-grey">
+          For the uninitiated, Mizumi Reserve might seem like yet another gated residential development. But that is just the beginning of all that it is.
+        </p>
+        <p class="p-grey">
+          A self-sustained township. Vast open spaces intended to foster deeper community connection, equipped with over 31 indoor and outdoor amenities on par with international standards. It is a world that has been thoughtfully crafted to be an extension of your life. So you feel at home even beyond the walls of your home. 
+        </p>
+      `
+    },
+    lakes: {
+      text: `
+        <h2>Life by the lakeside.</h2>
+        <p class="p-grey">
+          There’s little that compares to the joy of living by the water.
+          At Mizumi Reserve, a thoughtfully planned township, you’re surrounded by ~ 55 acres of pristine natural lakes - our greatest pride and joy. The tranquil waters, cool breeze, lush landscapes, and birdsong create a sense of peace that’s rare to find.
+        </p>
+        <p class="p-grey">
+          We know that if there's one thing better than living close to nature, <br class="desktop-only">it's moving into it.
+        </p>
+      `
+    }
+  };
+
+  // Entrance Animation
+  section.classList.add('ts-section-hidden');
+  const io = new IntersectionObserver((entries) => {
+    const e = entries[0];
+    if (e && e.isIntersecting) {
+      section.classList.remove('ts-section-hidden');
+      section.classList.add('ts-section-visible');
+      io.disconnect();
+    }
+  }, { threshold: 0.25 });
+  io.observe(section);
+
+  function replayAnim(el) {
+    if (!el) return;
+    el.classList.remove('ts-mr-tab-anim');
+    void el.offsetWidth;
+    el.classList.add('ts-mr-tab-anim');
+  }
+
+  function moveIndicator(targetBtn) {
+    if (!targetBtn || !tabsContainer || !indicator) return;
+    const containerRect = tabsContainer.getBoundingClientRect();
+    const btnRect = targetBtn.getBoundingClientRect();
+    const left = Math.round(btnRect.left - containerRect.left);
+    const width = Math.round(btnRect.width);
+    indicator.style.left = `${left}px`;
+    indicator.style.width = `${width}px`;
+  }
+
+  moveIndicator(tabsContainer.querySelector('.ts-tab-button.ts-active') || buttons[0]);
+  window.addEventListener('resize', () => {
+    moveIndicator(tabsContainer.querySelector('.ts-tab-button.ts-active') || buttons[0]);
+  });
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const selected = btn.dataset.tab;
+      if (!selected) return;
+
+      // Buttons active state + ARIA
+      buttons.forEach(b => {
+        const is = (b === btn);
+        b.classList.toggle('ts-active', is);
+        b.setAttribute('aria-selected', is ? 'true' : 'false');
+      });
+
+      // Swap text
+      if (content[selected] && content[selected].text) {
+        textContent.innerHTML = content[selected].text;
+      }
+
+      // Swap images
+      images.forEach(img => {
+        const isActive = img.dataset.tab === selected;
+        img.classList.toggle('ts-img--active', isActive);
+        img.style.display = isActive ? 'block' : 'none'; // ensures only one visible
+      });
+
+      // Replay animations
+      replayAnim(textContent);
+      images.forEach(img => {
+        if (img.dataset.tab === selected) replayAnim(img);
+      });
+
+      // Move indicator
+      moveIndicator(btn);
+    });
+  });
+})();
+// masterplan
+// Get all legend items and map buttons
+const legendItems = document.querySelectorAll(".legend-item");
+const mapButtons = document.querySelectorAll(".map-button");
+const mapLabels = document.querySelectorAll(".map-label");
+
+// Helper: Show label for a given ID
+function showLabel(id) {
+  mapLabels.forEach((label) => {
+    label.classList.toggle("visible", label.dataset.id === id);
+  });
+}
+
+// Helper: Hide all labels
+function hideLabels() {
+  mapLabels.forEach((label) => {
+    label.classList.remove("visible");
+  });
+}
+
+// Hover effect: Highlight button and show label on legend hover
+legendItems.forEach((item) => {
+  item.addEventListener("mouseenter", () => {
+    const id = item.querySelector("span").innerText;
+
+    // Highlight matching button
+    mapButtons.forEach((btn) => {
+      if (btn.dataset.id === id) {
+        btn.style.backgroundColor = "#000000";
+      } else {
+        btn.style.backgroundColor = "";
+      }
+    });
+
+    // Show matching label
+    showLabel(id);
+  });
+
+  item.addEventListener("mouseleave", () => {
+    mapButtons.forEach((btn) => (btn.style.backgroundColor = ""));
+    hideLabels();
+  });
+});
+
+// Hover effect: Highlight legend and show label on map button hover
+mapButtons.forEach((btn) => {
+  btn.addEventListener("mouseenter", () => {
+    const id = btn.dataset.id;
+
+    // Highlight legend item
+    legendItems.forEach((item) => {
+      const itemId = item.querySelector("span").innerText;
+      if (itemId === id) {
+        item.classList.add("active");
+      }
+    });
+
+    // Show label
+    showLabel(id);
+  });
+
+  btn.addEventListener("mouseleave", () => {
+    legendItems.forEach((item) => item.classList.remove("active"));
+    hideLabels();
+  });
+});
+
+// Animate master plan section when it enters viewport
+const masterPlanSection = document.querySelector(".master-plan");
+
+if (masterPlanSection) {
+  const masterPlanSectionObserver = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("animate");
+        masterPlanSectionObserver.unobserve(entry.target);
+      }
+    },
+    { threshold: 0.2 }
+  );
+
+  masterPlanSectionObserver.observe(masterPlanSection);
+}
+
+
+// highlights slider
+$(document).ready(function () {
+  // Main slider
+  const $mainSlider = $('.highlight-slider');
+  $mainSlider.slick({
+    arrows: false,
+    asNavFor: '.highlight-thumbnails',
+    fade: true,
+    speed: 800,
+    infinite: true,
+  });
+
+  // Thumbnails (horizontal)
+  const $thumbs = $('.highlight-thumbnails');
+  $thumbs.slick({
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    asNavFor: '.highlight-slider',
+    focusOnSelect: true,
+    vertical: false,
+    infinite: true,
+    arrows: false,
+    centerMode: false,
+    variableWidth: true,
+  });
+
+  // ✅ Show next image in thumbnail relative to main slider
+  $mainSlider.on('afterChange', function (event, slick, currentSlide) {
+    const total = slick.slideCount;
+    const nextIndex = (currentSlide + 1) % total; // next image
+    $thumbs.slick('slickGoTo', nextIndex); // make thumbnail show next image
+  });
+
+  // ✅ Click thumbnail → main slider updates
+  $thumbs.on('click', '.slick-slide', function (e) {
+    e.preventDefault();
+    const index = $(this).data('slick-index');
+    if (typeof index !== 'undefined') {
+      $mainSlider.slick('slickGoTo', index); // show corresponding main slide
+    }
+  });
+
+  // Custom arrows
+  $('.custom-arrow-horizontal.prev').click(function () {
+    $thumbs.slick('slickPrev');
+  });
+  $('.custom-arrow-horizontal.next').click(function () {
+    $thumbs.slick('slickNext');
+  });
+
+  // Progress bar logic
+  $mainSlider.on('afterChange', function (event, slick, currentSlide) {
+    const total = slick.slideCount;
+    const progress = ((currentSlide + 1) / total) * 100;
+    $('.horizontal-progress-fill').css('width', `${progress}%`);
+  });
+
+  // Initial thumbnail position to show next image
+  const initialNext = ($mainSlider.slick('getSlick').currentSlide + 1) % $mainSlider.slick('getSlick').slideCount;
+  $thumbs.slick('slickGoTo', initialNext);
+});
+// mobile version 
+$(document).ready(function () {
+  const $slider = $('.highlight-mobile-slider');
+  const $tabs = $('.highlight-tab');
+  const $indicator = $('.highlight-tab-indicator');
+  const $wrapper = $('.highlight-tabs-wrapper');
+
+  // Init slider
+  $slider.slick({
+    arrows: false,
+    dots: false,
+    adaptiveHeight: true
+  });
+
+  // Ensure indicator is placed correctly after slick sets sizes
+  function moveIndicator(index) {
+    const $tab = $tabs.eq(index);
+    if (!$tab.length) return;
+    const scrollLeft = $wrapper.scrollLeft();
+    // position().left gives position relative to the .highlight-tabs element
+    $indicator.css({
+      left: $tab.position().left + scrollLeft + 'px',
+      width: $tab.outerWidth() + 'px'
+    });
+  }
+
+  // After slick initializes, set the indicator (use setTimeout for safety on slow images)
+  $slider.on('init setPosition', function () {
+    const activeIndex = $tabs.filter('.active').data('slide') || 0;
+    moveIndicator(activeIndex);
+  });
+
+  // Slick sometimes fires init before we attach listener; call once
+  setTimeout(function () {
+    moveIndicator(0);
+  }, 50);
+
+  // Tab click
+  $tabs.on('click', function () {
+    const index = $(this).data('slide');
+    $tabs.removeClass('active');
+    $(this).addClass('active');
+
+    $slider.slick('slickGoTo', index);
+    $('.highlight-text-item').removeClass('active').eq(index).addClass('active');
+
+    // Ensure indicator moves (small timeout to allow any layout changes)
+    setTimeout(function () {
+      moveIndicator(index);
+    }, 10);
+  });
+
+  // Slider change -> update tabs + text + indicator
+  $slider.on('afterChange', function (event, slick, currentSlide) {
+    $tabs.removeClass('active').eq(currentSlide).addClass('active');
+    $('.highlight-text-item').removeClass('active').eq(currentSlide).addClass('active');
+    moveIndicator(currentSlide);
+  });
+
+  // Recalculate indicator on scroll of the tab wrapper
+  $wrapper.on('scroll', function () {
+    const activeIndex = $tabs.filter('.active').data('slide') || 0;
+    moveIndicator(activeIndex);
+  });
+
+  // Recalculate indicator on window resize (debounced)
+  let resizeTimer = null;
+  $(window).on('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      const activeIndex = $tabs.filter('.active').data('slide') || 0;
+      moveIndicator(activeIndex);
+    }, 80);
+  });
+
+  // ===== Arrow buttons (INSIDE ready so $slider is in scope) =====
+  $('.highlight-arrow.left').on('click', function () {
+    $slider.slick('slickPrev');
+  });
+
+  $('.highlight-arrow.right').on('click', function () {
+    $slider.slick('slickNext');
+  });
+
+});
+
+
+  // floor plan section 
+const floorData = {
+  "3BHK": {
+    types: [
+      {
+        label: "Type 1",
+        sbu: "1901 SQFT",
+        tca: "1431 SQFT",
+        image: "images/floor plans/3bhk-type2.webp",
+        features: [
+          { icon: "images/floor plans/sub-image1.webp", text: "Seamless indoor-outdoor living" },
+          { icon: "images/floor plans/sub-image2.webp", text: "Ample storage" },
+          { icon: "images/floor plans/sub-image3.webp", text: "Walk-in & tucked-in wardrobes" },
+          { icon: "images/floor plans/sub-image4.webp", text: "Large master suite" }
+        ]
+      },
+      {
+        label: "Type 2",
+        sbu: "2165 SQFT",
+        tca: "1648 SQFT",
+        image: "images/floor plans/3bhk-type1.webp",
+        features: [
+          { icon: "images/floor plans/sub-image1.webp", text: "Seamless indoor-outdoor living" },
+          { icon: "images/floor plans/sub-image2.webp", text: "Ample storage" },
+          { icon: "images/floor plans/sub-image3.webp", text: "Walk-in & tucked-in wardrobes" },
+          { icon: "images/floor plans/sub-image4.webp", text: "Large master suite" }
+        ]
+      },
+    ]
+  },
+  "4BHK": {
+    types: [
+      {
+        label: "Type 1",
+        sbu: "2477 SQFT",
+        tca: "1869 SQFT",
+        image: "images/floor plans/4bhk.webp",
+        features: [
+  { icon: "images/floor plans/sub-image1.webp", text: "Seamless indoor-outdoor living" },
+  { icon: "images/floor plans/sub-image2.webp", text: "Ample storage" },
+  { icon: "images/floor plans/sub-image3.webp", text: "Walk-in & tucked-in wardrobes" },
+  { icon: "images/floor plans/sub-image4.webp", text: "Large master suite" }
+]
+      }
+    ]
+  }
+};
+
+const aestheticsData = {
+  living: {
+    label: "Living & Bedroom",
+    image: "images/floor plans/living-room.png"
+  },
+  bathroom: {
+    label: "Bathroom",
+    image: "images/floor plans/bathroom.png"
+  }
+};
+
+let currentTab = "3BHK";
+let currentTypeIndex = 0;
+
+const floorTabs = document.querySelectorAll(".floor-tab");
+const subTabs = document.querySelectorAll(".aesthetics-tab");
+const aestheticsTabs = document.getElementById("aesthetics-tabs");
+const floorDetails = document.getElementById("floor-details");
+const typeToggle = document.getElementById("typeToggle");
+const floorImage = document.getElementById("floor-image");
+const label = document.getElementById("aesthetic-label");
+const viewButton = document.getElementById("viewButton");
+const flatType = document.getElementById("flat-type");
+const sbu = document.getElementById("sbu");
+const tca = document.getElementById("tca");
+const featuresList = document.getElementById("features-list");
+
+function updateFloorUI() {
+  const data = floorData[currentTab].types[currentTypeIndex];
+  flatType.textContent = data.label;
+  sbu.textContent = data.sbu;
+  tca.textContent = data.tca;
+  floorImage.src = data.image;
+
+  featuresList.innerHTML = "";
+data.features.forEach(f => {
+  const li = document.createElement("li");
+
+  const icon = document.createElement("img");
+  icon.src = f.icon;
+  icon.alt = f.text;
+  icon.className = "feature-icon";
+
+  const text = document.createElement("p");
+  text.textContent = f.text;
+
+  li.appendChild(icon);
+  li.appendChild(text);
+  featuresList.appendChild(li);
+});
+
+  if (floorData[currentTab].types.length > 1) {
+    typeToggle.style.display = "inline-block";
+    const nextIndex = (currentTypeIndex + 1) % floorData[currentTab].types.length;
+    typeToggle.textContent = floorData[currentTab].types[nextIndex].label + " ▸";
+  } else {
+    typeToggle.style.display = "none";
+  }
+  floorImage.classList.remove("show");
+setTimeout(() => {
+  floorImage.src = data.image;
+  floorImage.classList.add("show");
+}, 10);
+
+floorTitle.textContent = data.title;
+floorDescription.textContent = data.description;
+subTabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    subTabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    const key = tab.dataset.subtab;
+
+    floorImage.classList.remove("show");
+    setTimeout(() => {
+      floorImage.src = aestheticsData[key].image;
+      floorImage.classList.add("show");
+    }, 10);
+
+    label.textContent = aestheticsData[key].label;
+    viewButton.textContent = key === "living" ? "View Bathroom" : "View Living";
+    viewButton.onclick = () => switchTo(key === "living" ? "bathroom" : "living");
+  });
+});
+
+}
+
+floorTabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    floorTabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    currentTab = tab.dataset.tab;
+
+    if (currentTab === "Aesthetics") {
+      floorDetails.style.display = "none";
+      aestheticsTabs.style.display = "flex";
+      floorImage.src = aestheticsData.living.image;
+      label.textContent = aestheticsData.living.label;
+      viewButton.style.display = "inline-block";
+    } else {
+      aestheticsTabs.style.display = "none";
+      floorDetails.style.display = "block";
+      label.textContent = "";
+      viewButton.style.display = "none";
+      currentTypeIndex = 0;
+      updateFloorUI();
+    }
+  });
+});
+
+typeToggle.addEventListener("click", () => {
+  currentTypeIndex = (currentTypeIndex + 1) % floorData[currentTab].types.length;
+  updateFloorUI();
+});
+
+subTabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    subTabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    const key = tab.dataset.subtab;
+    floorImage.src = aestheticsData[key].image;
+    label.textContent = aestheticsData[key].label;
+    viewButton.textContent = key === "living" ? "View Bathroom" : "View Living";
+    viewButton.onclick = () => switchTo(key === "living" ? "bathroom" : "living");
+  });
+});
+
+function switchTo(key) {
+  const tab = document.querySelector(`.aesthetics-tab[data-subtab="${key}"]`);
+  if (tab) tab.click();
+}
+
+// ✅ Show initial tab content on load (3BHK)
+document.addEventListener("DOMContentLoaded", () => {
+  const defaultTab = document.querySelector('.floor-tab[data-tab="3BHK"]');
+  if (defaultTab) defaultTab.click();
+});
+(function () {
+  // shared data
+  const floorData = {
+    "3BHK": {
+      types: [
+        {
+          label: "Type 2",
+          sbu: "1901 SQFT",
+          tca: "1431 SQFT",
+          image: "images/floor plans/3bhk-type2.webp",
+          features: [
+            { icon: "images/floor plans/sub-image1.webp", text: "Seamless indoor-outdoor living" },
+            { icon: "images/floor plans/sub-image2.webp", text: "Ample storage" },
+            { icon: "images/floor plans/sub-image3.webp", text: "Walk-in & tucked-in wardrobes" },
+            { icon: "images/floor plans/sub-image4.webp", text: "Large master suite" }
+          ],
+          text: " "
+        },
+        {
+          label: "Type 2",
+          sbu: "2165 SQFT",
+          tca: "1648 SQFT",
+          image: "images/floor plans/3bhk-type1.webp",
+          features: [
+            { icon: "images/floor plans/sub-image1.webp", text: "Seamless indoor-outdoor living" },
+            { icon: "images/floor plans/sub-image2.webp", text: "Ample storage" },
+            { icon: "images/floor plans/sub-image3.webp", text: "Walk-in & tucked-in wardrobes" },
+            { icon: "images/floor plans/sub-image4.webp", text: "Large master suite" }
+          ],
+          text: " "
+        },
+      ]
+    },
+    "4BHK": {
+      types: [
+        {
+          label: "Type 1",
+          sbu: "2477 SQFT",
+          tca: "1869 SQFT",
+          image: "images/floor plans/4bhk.webp",
+          features: [
+            { icon: "images/floor plans/sub-image1.webp", text: "Seamless indoor-outdoor living" },
+            { icon: "images/floor plans/sub-image2.webp", text: "Ample storage" },
+            { icon: "images/floor plans/sub-image3.webp", text: "Walk-in & tucked-in wardrobes" },
+            { icon: "images/floor plans/sub-image4.webp", text: "Large master suite" }
+          ],
+          text: " "
+        }
+      ]
+    },
+    "Aesthetics": {
+      types: [
+        { label: "Living & Bedroom", image: "images/floor plans/living-room.png", text: "Living & Bedroom" },
+        { label: "Bathroom", image: "images/floor plans/bathroom.png", text: "Bathroom" }
+      ]
+    }
+  };
+
+  // state
+  let currentTab = "3BHK";
+  let currentTypeIndex = 0;
+
+  // desktop elements
+  const dFlatType = document.getElementById('flat-type');
+  const dSbu = document.getElementById('sbu');
+  const dTca = document.getElementById('tca');
+  const dFloorImage = document.getElementById('floor-image');
+  const dFeaturesList = document.getElementById('features-list');
+  const dAestheticLabel = document.getElementById('aesthetic-label');
+  const dTypeToggle = document.getElementById('typeToggle');
+
+  // mobile elements
+  const mobileWrapper = document.querySelector('.floorplans-mobile-only');
+  const mTabs = document.querySelectorAll('.fp-tab, .floor-tab'); // both mobile & desktop tab buttons share class floor-tab in some cases
+  const mTabsMobile = mobileWrapper ? mobileWrapper.querySelectorAll('.fp-tab') : document.querySelectorAll('.fp-tab');
+  const mIndicator = mobileWrapper ? mobileWrapper.querySelector('.fp-tab-indicator') : null;
+  const mImage = document.getElementById('fp-mobile-image') || document.getElementById('floor-image-mobile') || document.getElementById('floor-image-mobile');
+  const mCard = document.getElementById('fp-mobile-card') || document.getElementById('floor-text-mobile') || document.getElementById('fp-mobile-card');
+  const mFlatType = document.getElementById('fp-flat-type');
+  const mSbu = document.getElementById('fp-sbu');
+  const mTca = document.getElementById('fp-tca');
+  const mFeatures = document.getElementById('fp-features');
+  const mTypeToggle = document.getElementById('fp-type-toggle');
+  const mAestheticsGallery = document.getElementById('fp-mobile-aesthetics');
+
+  // helper: render features list (desktop)
+  function renderDesktopFeatures(listEl, featuresArr) {
+    if (!listEl) return;
+    listEl.innerHTML = '';
+    featuresArr.forEach(f => {
+      const li = document.createElement('li');
+      const img = document.createElement('img');
+      img.src = f.icon;
+      img.alt = f.text;
+      img.style.width = '28px';
+      img.style.height = '28px';
+      img.style.objectFit = 'contain';
+      const p = document.createElement('p');
+      p.textContent = f.text;
+      p.style.margin = '0';
+      li.appendChild(img);
+      li.appendChild(p);
+      listEl.appendChild(li);
+    });
+  }
+
+  // update UI (desktop + mobile)
+  function updateUI() {
+    const tabData = floorData[currentTab];
+    if (!tabData) return;
+    const typeObj = tabData.types[currentTypeIndex];
+
+    // desktop update
+    if (dFlatType) dFlatType.textContent = typeObj.label || '';
+    if (dSbu) dSbu.textContent = typeObj.sbu || '';
+    if (dTca) dTca.textContent = typeObj.tca || '';
+    if (dFloorImage) dFloorImage.src = typeObj.image || '';
+    if (dAestheticLabel) dAestheticLabel.textContent = typeObj.text || '';
+
+    if (dFeaturesList) {
+      renderDesktopFeatures(dFeaturesList, typeObj.features || []);
+    }
+
+    // desktop type toggle visibility
+    if (dTypeToggle) dTypeToggle.style.display = (tabData.types.length > 1 && currentTab !== 'Aesthetics') ? 'inline-block' : 'none';
+
+    // mobile update
+    // image & card
+    if (mImage) mImage.src = typeObj.image || '';
+// Hide all sections first
+floorDetails.classList.remove("show");
+aestheticsTabs.classList.remove("show");
+
+if (currentTab === "Aesthetics") {
+  aestheticsTabs.classList.add("show");
+
+  floorImage.classList.remove("show");
+  setTimeout(() => {
+    floorImage.src = aestheticsData.living.image;
+    floorImage.classList.add("show");
+  }, 10);
+
+  label.textContent = aestheticsData.living.label;
+  viewButton.style.display = "inline-block";
+} else {
+  floorDetails.classList.add("show");
+
+  floorImage.classList.remove("show");
+  setTimeout(() => {
+    updateFloorUI();
+    floorImage.classList.add("show");
+  }, 10);
+
+  label.textContent = "";
+  viewButton.style.display = "none";
+}
+    // if Aesthetics: show gallery & hide card
+    if (currentTab === 'Aesthetics') {
+      if (mCard) mCard.style.display = 'none';
+      if (mAestheticsGallery) {
+        mAestheticsGallery.style.display = 'block';
+        mAestheticsGallery.innerHTML = '';
+        tabData.types.forEach(t => { 
+    const div = document.createElement('div'); // wrapper per item
+
+    const p = document.createElement('p');
+    p.textContent = t.label;
+
+    const img = document.createElement('img');
+    img.src = t.image;
+    img.alt = t.label;
+
+    // append text first, then image
+    div.appendChild(p);
+    div.appendChild(img);
+
+    mAestheticsGallery.appendChild(div);
+        });
+      }
+    } else {
+      if (mAestheticsGallery) mAestheticsGallery.style.display = 'none';
+      if (mCard) mCard.style.display = 'block';
+      if (mFlatType) mFlatType.textContent = typeObj.label || '';
+      if (mSbu) mSbu.textContent = typeObj.sbu || '';
+      if (mTca) mTca.textContent = typeObj.tca || '';
+      if (mFeatures) {
+        mFeatures.innerHTML = '';
+        (typeObj.features || []).forEach(f => {
+          const li = document.createElement('li');
+          const img = document.createElement('img');
+          img.src = f.icon;
+          img.alt = f.text;
+          const p = document.createElement('p');
+          p.textContent = f.text;
+          li.appendChild(img);
+          li.appendChild(p);
+          mFeatures.appendChild(li);
+        });
+      }
+    }
+   if (mTypeToggle) {
+  mTypeToggle.style.display = (currentTab === '4BHK' || floorData[currentTab].types.length <= 1) 
+    ? 'none' 
+    : 'inline-block';
+
+  // ✅ Add this line to update button text
+  const nextIndex = (currentTypeIndex + 1) % floorData[currentTab].types.length;
+  mTypeToggle.textContent = floorData[currentTab].types[nextIndex].label + " ▸";
+}
+  }
+
+  // move tab underline for a given tab element
+  function moveMobileUnderline(tabEl) {
+    if (!mIndicator || !tabEl) return;
+    const parent = tabEl.parentElement;
+    const parentRect = parent.getBoundingClientRect();
+    const btnRect = tabEl.getBoundingClientRect();
+    const left = btnRect.left - parentRect.left + parent.scrollLeft;
+    mIndicator.style.left = left + 'px';
+    mIndicator.style.width = btnRect.width + 'px';
+  }
+
+  // init tab event listeners (both desktop and mobile tabs share .floor-tab)
+  function initTabs() {
+    const tabs = document.querySelectorAll('#floorplans-full-section .floor-tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', function () {
+        // remove active from all
+        document.querySelectorAll('#floorplans-full-section .floor-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        currentTab = this.dataset.tab;
+        currentTypeIndex = 0;
+        updateUI();
+
+        // move mobile underline when on mobile and indicator present
+        if (window.innerWidth <= 768) {
+          const mobileTab = document.querySelector('.floorplans-mobile-only .fp-tab[data-tab="' + currentTab + '"]') ||
+                            document.querySelector('.floorplans-mobile-only .fp-tab:nth-child(1)');
+          // also support mobile-class buttons with same class
+          const mobileBtn = document.querySelector('.floorplans-mobile-only .fp-tab[data-tab="' + currentTab + '"]');
+          if (mobileBtn) moveMobileUnderline(mobileBtn);
+        } else {
+          // for desktop, if there's a tab-underline element, move it
+          const desktopTabsContainer = document.querySelector('.floorplans-desktop .floor-tabs');
+          if (desktopTabsContainer) {
+            const underline = desktopTabsContainer.querySelector('.tab-underline');
+            if (underline) {
+              const btn = desktopTabsContainer.querySelector('.floor-tab.active');
+              if (btn) {
+                underline.style.width = btn.offsetWidth + 'px';
+                underline.style.left = btn.offsetLeft + 'px';
+              }
+            }
+          }
+        }
+      });
+    });
+
+    // MOBILE specific tab nodes (they may be different elements)
+    const mobileTabs = document.querySelectorAll('.floorplans-mobile-only .fp-tab');
+    mobileTabs.forEach((btn) => {
+      btn.addEventListener('click', function () {
+        // remove active in mobile tabs
+        document.querySelectorAll('.floorplans-mobile-only .fp-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+
+        // ensure desktop tabs sync active too (shared dataset)
+        document.querySelectorAll('#floorplans-full-section .floor-tab').forEach(t => {
+          if (t.dataset.tab === this.dataset.tab) {
+            t.classList.add('active');
+          } else {
+            t.classList.remove('active');
+          }
+        });
+
+        currentTab = this.dataset.tab;
+        currentTypeIndex = 0;
+        updateUI();
+        moveMobileUnderline(this);
+        // ensure tab is visible (center)
+        try { this.scrollIntoView({ inline: 'center', behavior: 'smooth' }); } catch(e) {}
+      });
+    });
+  }
+
+  // init type toggle buttons (desktop + mobile)
+  function initTypeToggles() {
+    const desktopToggle = document.getElementById('typeToggle');
+    const mobileToggle = document.getElementById('fp-type-toggle');
+
+    function toggleType() {
+      const tabTypes = floorData[currentTab] && floorData[currentTab].types ? floorData[currentTab].types.length : 0;
+      if (tabTypes <= 1) return;
+      currentTypeIndex = (currentTypeIndex + 1) % tabTypes;
+      
+      updateUI();
+    }
+
+    if (desktopToggle) desktopToggle.addEventListener('click', toggleType);
+    if (mobileToggle) mobileToggle.addEventListener('click', toggleType);
+  }
+
+  // initial setup
+  function init() {
+    // set default
+    currentTab = '3BHK';
+    currentTypeIndex = 0;
+
+    // populate desktop initial features etc (in case)
+    updateUI();
+
+    // init listeners
+    initTabs();
+    initTypeToggles();
+
+    // position indicator/underline after fonts/images likely loaded
+    setTimeout(() => {
+      // mobile underline initial position
+      const activeMobile = document.querySelector('.floorplans-mobile-only .fp-tab.active');
+      if (activeMobile) moveMobileUnderline(activeMobile);
+
+      // desktop underline initial position
+      const desktopTabsContainer = document.querySelector('.floorplans-desktop .floor-tabs');
+      if (desktopTabsContainer) {
+        const underline = desktopTabsContainer.querySelector('.tab-underline');
+        const btn = desktopTabsContainer.querySelector('.floor-tab.active');
+        if (underline && btn) {
+          underline.style.width = btn.offsetWidth + 'px';
+          underline.style.left = btn.offsetLeft + 'px';
+        }
+      }
+    }, 240);
+
+    // reposition on resize
+    window.addEventListener('resize', () => {
+      const activeMobile = document.querySelector('.floorplans-mobile-only .fp-tab.active');
+      if (activeMobile) moveMobileUnderline(activeMobile);
+      const desktopTabsContainer = document.querySelector('.floorplans-desktop .floor-tabs');
+      if (desktopTabsContainer) {
+        const underline = desktopTabsContainer.querySelector('.tab-underline');
+        const btn = desktopTabsContainer.querySelector('.floor-tab.active');
+        if (underline && btn) {
+          underline.style.width = btn.offsetWidth + 'px';
+          underline.style.left = btn.offsetLeft + 'px';
+        }
+      }
+    });
+  }
+
+  // run init on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+
+
+
+// sustainality
+document.querySelectorAll(".spec-title").forEach((title) => {
+  title.addEventListener("click", () => {
+    const item = title.parentElement;
+    const isOpen = item.classList.contains("active");
+    document
+      .querySelectorAll(".spec-item")
+      .forEach((i) => i.classList.remove("active"));
+    if (!isOpen) item.classList.add("active");
+  });
+});
+document.addEventListener("DOMContentLoaded", function () {
+  const chSection = document.querySelector(".carbon-healing-section");
+
+  if (!chSection) return;
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          chSection.classList.add("animate");
+          obs.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.3,
+    }
+  );
+
+  observer.observe(chSection);
+});
+
+
+// experience slider
+$(document).ready(function () {
+  const $textSlider = $('.experience-text-slider');
+  const $slides = $('.experience-slider .slide-item');
+  let currentIndex = 0;
+
+  // Initialize text slider
+  $textSlider.slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    fade: true
+  });
+
+  // Update slide widths
+  function setCurrent(index) {
+    $slides.removeClass('wide-slide').addClass('narrow-slide');
+    $($slides[index]).removeClass('narrow-slide').addClass('wide-slide');
+    currentIndex = index;
+    $('.current-slide').text(index + 1);
+    $textSlider.slick('slickGoTo', index);
+  }
+
+  // Initial state
+  setCurrent(0);
+
+  // Hover effect
+  $slides.hover(function(){
+    const index = $(this).index();
+    setCurrent(index);
+  });
+
+  // Arrow controls
+  $('.arrow-prev').click(()=> {
+    let index = (currentIndex - 1 + $slides.length) % $slides.length;
+    setCurrent(index);
+  });
+  $('.arrow-next').click(()=> {
+    let index = (currentIndex + 1) % $slides.length;
+    setCurrent(index);
+  });
+});
+
+// Section animation
+document.addEventListener("DOMContentLoaded", function () {
+  const experienceSection = document.querySelector(".experience-section");
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        experienceSection.classList.add("visible");
+        obs.unobserve(experienceSection);
+      }
+    });
+  }, {threshold: 0.3});
+  observer.observe(experienceSection);
+});
+
+// for mobile
+$(document).ready(function(){
+  $('.mobile-slider').slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      arrows: false, // using custom arrows
+      centerMode: true,
+      centerPadding: '10%',
+      infinite: true
+  });
+
+  // Custom unique arrow controls
+  $('.xp-arrow-prev').on('click', function () {
+      $('.mobile-slider').slick('slickPrev');
+  });
+
+  $('.xp-arrow-next').on('click', function () {
+      $('.mobile-slider').slick('slickNext');
+  });
+});
+
+
+// virtual tour 
+ document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', function () {
+      // Update active tab
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+
+      // Hide all containers
+      document.querySelectorAll('.video-container').forEach(container => {
+        container.classList.remove('active');
+      });
+
+      // Show the selected one
+      const targetId = this.getAttribute('data-target');
+      const targetContainer = document.getElementById(targetId);
+      if (targetContainer) {
+        targetContainer.classList.add('active');
+      }
+    });
+  });
+
+  // amenities section
+// $(document).ready(function(){
+//   $('.slick-amenities').slick({
+//     dots: false,
+//     arrows: true,
+//     speed: 600,
+//     slidesToShow: 1,
+//     slidesToScroll: 1,
+//     adaptiveHeight: true,
+//     prevArrow: $('.amenities-prev'),
+//     nextArrow: $('.amenities-next'),
+
+//     autoplay: true,
+//     autoplaySpeed: 3000, 
+//     infinite: true,      
+//     pauseOnHover: true  
+//   });
+// });
+
+
+// specification section
+document.addEventListener("DOMContentLoaded", function () {
+  const root = document.querySelector(".specs");
+  if (!root) return;
+
+  const items = Array.from(root.querySelectorAll(".specs__item"));
+
+  items.forEach((item, index) => {
+    const header = item.querySelector(".specs__header");
+    const panel = item.querySelector(".specs__panel");
+
+    // Accessibility IDs
+    const headerId = `specs-header-${index}`;
+    const panelId = `specs-panel-${index}`;
+    header.id = headerId;
+    panel.id = panelId;
+    header.setAttribute("aria-controls", panelId);
+    panel.setAttribute("aria-labelledby", headerId);
+    panel.setAttribute("role", "region");
+
+    // Set initial expanded state
+    const openOnLoad = item.classList.contains("is-open");
+    header.setAttribute("aria-expanded", openOnLoad ? "true" : "false");
+    if (openOnLoad) {
+      // Set to scrollHeight so it displays; after animation we set to 'none'
+      panel.style.maxHeight = panel.scrollHeight + "px";
+      panel.addEventListener("transitionend", function onInit() {
+        // switch to 'none' so internal content can reflow on resize
+        if (item.classList.contains("is-open")) panel.style.maxHeight = "none";
+        panel.removeEventListener("transitionend", onInit);
+      });
+    } else {
+      panel.style.maxHeight = "0px";
+    }
+
+    header.addEventListener("click", () => {
+      const isOpen = item.classList.contains("is-open");
+
+      // Close all others (single-open UX)
+      items.forEach((other) => {
+        if (other !== item) closeItem(other);
+      });
+
+      // Toggle clicked item
+      if (isOpen) closeItem(item);
+      else openItem(item);
+    });
+
+    // helper functions
+    function openItem(it) {
+      const hdr = it.querySelector(".specs__header");
+      const pnl = it.querySelector(".specs__panel");
+      it.classList.add("is-open");
+      hdr.setAttribute("aria-expanded", "true");
+
+      // Set explicit maxHeight to enable transition
+      pnl.style.maxHeight = pnl.scrollHeight + "px";
+
+      // After the transition completes, set to 'none' so panel can grow/shrink naturally if content changes
+      const onEnd = function (e) {
+        if (e.propertyName === "max-height") pnl.style.maxHeight = "none";
+        pnl.removeEventListener("transitionend", onEnd);
+      };
+      pnl.addEventListener("transitionend", onEnd);
+    }
+
+    function closeItem(it) {
+      const hdr = it.querySelector(".specs__header");
+      const pnl = it.querySelector(".specs__panel");
+
+      // if maxHeight is 'none' (auto), set to current scrollHeight to start the animation from a pixel value
+      if (!pnl.style.maxHeight || pnl.style.maxHeight === "none") {
+        pnl.style.maxHeight = pnl.scrollHeight + "px";
+      }
+
+      // force reflow to ensure transition picks up
+      pnl.getBoundingClientRect();
+
+      // animate to 0
+      pnl.style.maxHeight = "0px";
+      hdr.setAttribute("aria-expanded", "false");
+      it.classList.remove("is-open");
+    }
+  });
+
+  // OPTIONAL: update open panel heights on window resize
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const open = root.querySelector(".specs__item.is-open");
+      if (open) {
+        const pnl = open.querySelector(".specs__panel");
+        // if panel is 'none' (auto) we can leave it; if it's a px value, update it
+        if (pnl.style.maxHeight && pnl.style.maxHeight !== "none") {
+          pnl.style.maxHeight = pnl.scrollHeight + "px";
+        }
+      }
+    }, 120);
+  });
+});
+// for mobile
+document.querySelectorAll(".specification-mobile-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".specification-mobile-tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".specification-mobile-content").forEach(c => {
+      c.classList.remove("active");
+      setTimeout(() => { if (!c.classList.contains("active")) c.style.display = "none"; }, 400);
+    });
+
+    tab.classList.add("active");
+    const target = document.getElementById(tab.dataset.tab);
+    target.style.display = "block";
+    setTimeout(() => target.classList.add("active"), 10);
+  });
+});
+// location section 
+document.addEventListener("DOMContentLoaded", function () {
+  const section = document.querySelector(".location-connectivity");
+  const tabButtons = section.querySelectorAll(".tab-btn");
+  const tabContents = section.querySelectorAll(".tab-content");
+  const titleH2 = section.querySelector(".section-header .title h2");
+
+  // --- Tab Switching with Animation ---
+  tabButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tab = btn.dataset.tab;
+
+      // Animate title
+      titleH2.classList.add("fade-out");
+      setTimeout(() => {
+        titleH2.textContent = tab.charAt(0).toUpperCase() + tab.slice(1);
+        titleH2.classList.remove("fade-out");
+        titleH2.classList.add("fade-in");
+        setTimeout(() => titleH2.classList.remove("fade-in"), 300);
+      }, 200);
+
+      // Animate tab content
+      tabContents.forEach(content => {
+        const show = content.id === tab;
+
+        if (show) {
+          content.style.display = "block";
+          setTimeout(() => content.classList.add("active"), 10); // trigger fade-in
+        } else {
+          content.classList.remove("active"); // fade-out
+          setTimeout(() => { content.style.display = "none"; }, 400);
+        }
+      });
+
+      // Update tab buttons active state
+      tabButtons.forEach(b => {
+        b.classList.toggle("active", b === btn);
+        b.setAttribute("aria-selected", b === btn ? "true" : "false");
+      });
+    });
+  });
+
+  // --- Accordion + Image Swap Logic ---
+  const accordionItems = section.querySelectorAll(".accordion-item");
+  const mapImage = document.getElementById("mapImage");
+
+  // Open first accordion by default
+  const initiallyOpen = section.querySelector(".accordion-item.active");
+  if (initiallyOpen) {
+    const img = initiallyOpen.getAttribute("data-image");
+    if (img) mapImage.src = img;
+    const content = initiallyOpen.querySelector(".accordion-content");
+    if (content) content.style.maxHeight = content.scrollHeight + "px";
+    const arrow = initiallyOpen.querySelector(".arrow-img");
+    if (arrow) arrow.src = "public/images/specifications/upward.webp";
+  }
+
+  accordionItems.forEach(item => {
+    const title = item.querySelector(".accordion-title");
+    const content = item.querySelector(".accordion-content");
+    const arrow = item.querySelector(".arrow-img");
+
+    title.addEventListener("click", () => {
+      // Close all others
+      accordionItems.forEach(i => {
+        if (i !== item) {
+          i.classList.remove("active");
+          const c = i.querySelector(".accordion-content");
+          if (c) {
+            c.style.maxHeight = "0px";
+            c.style.paddingTop = "0px";
+          }
+          const a = i.querySelector(".arrow-img");
+          if (a) a.src = "images/specifications/downward.webp";
+        }
+      });
+
+      const willOpen = !item.classList.contains("active");
+      item.classList.toggle("active", willOpen);
+
+      if (willOpen) {
+        if (content) {
+          content.style.maxHeight = content.scrollHeight + "px";
+          content.style.paddingTop = "10px";
+        }
+        if (arrow) arrow.src = "images/specifications/upward.webp";
+
+        const newImage = item.getAttribute("data-image");
+        if (newImage) mapImage.src = newImage;
+      } else {
+        if (content) {
+          content.style.maxHeight = "0px";
+          content.style.paddingTop = "0px";
+        }
+        if (arrow) arrow.src = "images/specifications/downward.webp";
+      }
+    });
+
+    // Adjust open content maxHeight on resize
+    window.addEventListener("resize", () => {
+      if (item.classList.contains("active") && content) {
+        content.style.maxHeight = content.scrollHeight + "px";
+      }
+    });
+  });
+});
+
+// for mobile 
+document.addEventListener("DOMContentLoaded", () => {
+  const tabBtns = document.querySelectorAll(".lc-tab-btn");
+  const tabContents = document.querySelectorAll(".lc-tab-content");
+  const innerTabBtns = document.querySelectorAll(".lc-inner-tab-btn");
+  const categoryLists = document.querySelectorAll(".lc-category-list");
+  const innerMap = document.getElementById("lc-innerMapImage");
+  const heading = document.querySelector(".lc-dynamic-heading");
+
+  // Helper: show element with fade
+  const showElement = (el) => {
+    el.style.display = "block";
+    setTimeout(() => el.classList.add("active"), 10);
+  };
+
+  // Helper: hide element with fade
+  const hideElement = (el) => {
+    el.classList.remove("active");
+    setTimeout(() => el.style.display = "none", 400);
+  };
+
+  // Outer Tabs
+  tabBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tab = btn.dataset.tab;
+      heading.textContent = tab.charAt(0).toUpperCase() + tab.slice(1);
+
+      tabBtns.forEach(b => b.classList.toggle("active", b === btn));
+      tabContents.forEach(c => {
+        if (c.id === tab) showElement(c);
+        else hideElement(c);
+      });
+    });
+  });
+
+  // Inner Tabs (Location)
+  innerTabBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const innerTab = btn.dataset.innerTab;
+      innerTabBtns.forEach(b => b.classList.toggle("active", b === btn));
+
+      // update map
+      innerMap.src = `images/location/${innerTab}.webp`;
+
+      // animate category lists
+      categoryLists.forEach(list => {
+        if (list.dataset.innerTab === innerTab) showElement(list);
+        else hideElement(list);
+      });
+    });
+  });
+
+  // Initial setup: show first outer tab & first inner tab
+  tabContents.forEach(c => c.style.display = c.classList.contains("active") ? "block" : "none");
+  categoryLists.forEach(l => l.style.display = l.classList.contains("active") ? "block" : "none");
+});
+// gallery section 
+$(document).ready(function(){
+
+  // Main slider
+  $('.gallery-main').slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    fade: true,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    asNavFor: '.gallery-thumbs'
+  });
+
+  // Thumbnails
+  $('.gallery-thumbs').slick({
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    asNavFor: '.gallery-main',
+    vertical: true,
+    focusOnSelect: true,
+    arrows: false,
+    centerMode: true,
+    infinite: true
+  });
+
+  // Function to update current thumbnail styling on all clones
+  function setCurrentThumb(index) {
+    $('.gallery-thumbs .slick-slide').removeClass('slick-current');
+    $('.gallery-thumbs .slick-slide[data-slick-index="'+index+'"]').addClass('slick-current');
+  }
+
+  // On main slide change
+  $('.gallery-main').on('afterChange', function(event, slick, currentSlide){
+    setCurrentThumb(currentSlide);
+  });
+
+  // On thumbnail click
+  $('.gallery-thumbs').on('click', '.slick-slide', function(){
+    var index = $(this).attr('data-slick-index');
+    $('.gallery-main').slick('slickGoTo', parseInt(index));
+    setCurrentThumb(parseInt(index));
+  });
+
+  // Initialize first active
+  setCurrentThumb(0);
+
+  // Force Slick to recalc sizes
+  $('.gallery-main, .gallery-thumbs').slick('setPosition');
+  setTimeout(function(){ $(window).trigger('resize'); }, 100);
+});
+// for mobile
+$(document).ready(function(){
+
+  $('.gm-slider').slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    dots: false,
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 2500,  // smooth autoplay
+    speed: 600,           // smooth transition
+    centerMode: true,
+    centerPadding: '20px'
+  });
+
+  // Custom arrows
+  $('.gm-arrow-prev').on('click', function(){
+    $('.gm-slider').slick('slickPrev');
+  });
+
+  $('.gm-arrow-next').on('click', function(){
+    $('.gm-slider').slick('slickNext');
+  });
+
+});
+
+
+// why mezumi section 
+$(window).on('load', function () {
+  var $carousel = $('.why-mezumi-carousel');
+
+  $carousel.slick({
+    slidesToShow: 3,       // use integer
+    slidesToScroll: 1,
+    arrows: false,
+    dots: false,
+    infinite: true,        // ✅ infinite now works
+    swipeToSlide: true,
+    draggable: true,
+    accessibility: true,
+    touchThreshold: 10,
+    edgeFriction: 0.35,
+    respondTo: 'window',
+    responsive: [
+      { breakpoint: 1200, settings: { slidesToShow: 2 } },
+      { breakpoint: 768,  settings: { slidesToShow: 1 } },
+      { breakpoint: 480,  settings: { slidesToShow: 1 } }
+    ]
+  });
+
+  // Custom arrow controls
+  $('.why-prev').on('click', function () {
+    $carousel.slick('slickPrev');
+  });
+
+  $('.why-next').on('click', function () {
+    $carousel.slick('slickNext');
+  });
+});
+
+
+// walkthrough section 
+function openVideo() {
+  const container = document.getElementById("videoContainer");
+  container.innerHTML = `
+    <iframe width="100%" height="600" 
+      src="https://www.youtube.com/embed/o072QrxuE14?autoplay=1" 
+      frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+    </iframe>
+  `;
+}
+
+
+// clubhouse animation 
+const clubhouseSection = document.querySelector('.clubhouse-section');
+
+function revealClubhouseSection() {
+  const rect = clubhouseSection.getBoundingClientRect();
+  if (rect.top < window.innerHeight * 0.8) {
+    clubhouseSection.classList.add('visible');
+    window.removeEventListener('scroll', revealClubhouseSection); // trigger once
+  }
+}
+
+window.addEventListener('scroll', revealClubhouseSection);
+revealClubhouseSection();
