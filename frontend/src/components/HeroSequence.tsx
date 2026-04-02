@@ -12,39 +12,44 @@ export default function HeroSequence() {
   const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
     let handleMouseMove: (e: MouseEvent) => void;
 
     const ctx = gsap.context(() => {
-      // Pin the hero section and play video during scroll
+      // Initial load animation
+      gsap.from(textRef.current, {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        ease: 'power3.out',
+      });
+
+      // Scroll-based animations
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: 'top top',
-          end: '+=150%', // Scroll distance
-          scrub: 1, // Smooth linking to scroll
-          pin: true,
+          end: 'bottom top',
+          scrub: 1,
         },
       });
 
-      // Fade out text as user scrolls
+      // Text moves up and fades out as you scroll
       tl.to(
         textRef.current,
         {
           opacity: 0,
-          y: -100,
+          y: -150,
           ease: 'none',
         },
         0
       );
 
-      // Zoom out video as user scrolls
+      // Video zooms in and darkens as you scroll
       tl.to(
         videoRef.current,
         {
-          scale: 0.9,
+          scale: 1.2,
+          opacity: 0.3,
           ease: 'none',
         },
         0
