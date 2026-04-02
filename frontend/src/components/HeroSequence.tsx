@@ -98,7 +98,7 @@ export default function HeroSequence() {
   return (
     <section 
       ref={containerRef} 
-      className="relative z-0 h-screen w-full bg-[#f8f7f5] dark:bg-black overflow-hidden perspective-[1000px]"
+      className="relative z-0 h-screen w-full bg-[#d8e0e8] dark:bg-black overflow-hidden perspective-[1000px]"
     >
       <video
         ref={videoRef}
@@ -109,7 +109,7 @@ export default function HeroSequence() {
         muted
         playsInline
       />
-      <div className="absolute inset-0 z-10 bg-[#f8f7f5]/30 dark:bg-black/30 pointer-events-none" />
+      <div className="absolute inset-0 z-10 bg-[#d8e0e8]/30 dark:bg-black/30 pointer-events-none" />
       <div 
         ref={textRef} 
         className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none origin-center"
