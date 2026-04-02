@@ -32,7 +32,7 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 w-full z-[100] transition-all duration-500 ${
         isScrolled
-          ? 'bg-neutral-950/80 backdrop-blur-md border-b border-white/5 py-4'
+          ? 'bg-white/80 dark:bg-neutral-950/80 backdrop-blur-md border-b border-black/5 dark:border-white/5 py-4'
           : 'bg-transparent py-6'
       }`}
     >
@@ -59,14 +59,14 @@ export default function Navbar() {
             <button
               key={item.label}
               onClick={() => scrollToSection(item.id)}
-              className="text-xs uppercase tracking-widest text-neutral-300 hover:text-amber-500 transition-colors font-sans"
+              className="text-xs uppercase tracking-widest text-neutral-700 dark:text-neutral-300 hover:text-amber-500 transition-colors font-sans"
             >
               {item.label}
             </button>
           ))}
           <button 
             onClick={() => scrollToSection('contact')}
-            className="text-xs uppercase tracking-widest font-semibold text-black bg-amber-500 hover:bg-white transition-colors px-6 py-3 rounded-sm ml-4"
+            className="text-xs uppercase tracking-widest font-semibold text-white dark:text-black bg-amber-500 hover:bg-black dark:hover:bg-white transition-colors px-6 py-3 rounded-sm ml-4"
           >
             Enquire
           </button>
@@ -77,7 +77,7 @@ export default function Navbar() {
         <div className="flex md:hidden items-center gap-4">
           <ThemeToggle />
           <button 
-            className="text-neutral-300 hover:text-amber-500 transition-colors"
+            className="text-neutral-700 dark:text-neutral-300 hover:text-amber-500 transition-colors"
             aria-label="Menu"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="round">

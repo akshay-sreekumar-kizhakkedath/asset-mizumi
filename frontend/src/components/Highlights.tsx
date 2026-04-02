@@ -52,9 +52,9 @@ export default function Highlights() {
   const loopItems = [...highlights, ...highlights];
 
   return (
-    <section id="highlights" ref={containerRef} className="py-32 w-full bg-neutral-900 overflow-hidden flex flex-col justify-center">
+    <section id="highlights" ref={containerRef} className="py-32 w-full bg-neutral-100 dark:bg-neutral-900 overflow-hidden flex flex-col justify-center">
       <div className="px-12 md:px-24 mb-16 shrink-0 relative z-10">
-        <h2 className="text-4xl md:text-5xl font-serif text-white tracking-wide uppercase">Highlights</h2>
+        <h2 className="text-4xl md:text-5xl font-serif text-black dark:text-white tracking-wide uppercase">Highlights</h2>
       </div>
       
       <div className="relative w-full overflow-hidden">
@@ -62,7 +62,7 @@ export default function Highlights() {
           {loopItems.map((item, i) => (
             <div
               key={i}
-              className="w-[80vw] md:w-[60vw] lg:w-[40vw] h-full flex flex-col bg-neutral-950/50 rounded-2xl overflow-hidden shrink-0 border border-white/5"
+              className="w-[80vw] md:w-[60vw] lg:w-[40vw] h-full flex flex-col bg-neutral-950/50 rounded-2xl overflow-hidden shrink-0 border border-black/5 dark:border-white/5"
             >
               <div className="w-full h-2/3 relative overflow-hidden group">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -71,14 +71,14 @@ export default function Highlights() {
                   alt={item.title}
                   className="w-full h-full object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-all duration-700" />
+                <div className="absolute inset-0 bg-white/40 dark:bg-black/40 group-hover:bg-black/10 transition-all duration-700" />
               </div>
-              <div className="w-full h-1/3 flex flex-col justify-center p-8 shrink-0 text-left bg-neutral-950">
+              <div className="w-full h-1/3 flex flex-col justify-center p-8 shrink-0 text-left bg-neutral-50 dark:bg-neutral-950">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-2xl md:text-3xl font-serif text-white leading-tight">{item.title}</h3>
+                  <h3 className="text-2xl md:text-3xl font-serif text-black dark:text-white leading-tight">{item.title}</h3>
                   <span className="text-amber-500 font-mono tracking-widest text-xs opacity-50">0{(i % highlights.length) + 1}</span>
                 </div>
-                <p className="text-sm md:text-base text-neutral-400 font-sans max-w-xl leading-relaxed">
+                <p className="text-sm md:text-base text-neutral-600 dark:text-neutral-400 font-sans max-w-xl leading-relaxed">
                   {item.desc}
                 </p>
               </div>

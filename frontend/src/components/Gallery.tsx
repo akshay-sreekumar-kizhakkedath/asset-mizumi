@@ -46,12 +46,12 @@ export default function Gallery() {
   return (
     <section 
       ref={sectionRef} 
-      className="py-32 w-full bg-neutral-950 overflow-hidden relative"
+      className="py-32 w-full bg-neutral-50 dark:bg-neutral-950 overflow-hidden relative"
       id="gallery"
     >
       <div className="text-center mb-24 relative z-10">
         <h2 className="text-sm tracking-[0.3em] text-amber-500 uppercase mb-4">Gallery</h2>
-        <h3 className="text-5xl md:text-7xl font-serif text-white/90">A Glimpse of Perfection</h3>
+        <h3 className="text-5xl md:text-7xl font-serif text-black/90 dark:text-white/90">A Glimpse of Perfection</h3>
       </div>
 
       {/* Parallax Grid */}
