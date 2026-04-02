@@ -14,7 +14,10 @@ export default function ContactForm() {
           <h3 className="text-5xl md:text-7xl font-serif text-neutral-900 dark:text-white/90">Begin your journey</h3>
         </div>
 
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-8 text-neutral-800 dark:text-white/80" onSubmit={(e) => e.preventDefault()}>
+        <form 
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 text-neutral-800 dark:text-white/80 p-8 md:p-12 rounded-3xl border border-transparent transition-all duration-500 ease-out hover:scale-[1.01] focus-within:scale-[1.01] hover:-translate-y-2 focus-within:-translate-y-2 hover:bg-white/40 dark:hover:bg-neutral-900/40 focus-within:bg-white/40 dark:focus-within:bg-neutral-900/40 hover:backdrop-blur-xl focus-within:backdrop-blur-xl hover:border-white/60 dark:hover:border-white/10 focus-within:border-white/60 dark:focus-within:border-white/10 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] focus-within:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:focus-within:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]" 
+          onSubmit={(e) => e.preventDefault()}
+        >
           <div className="flex flex-col group">
             <label className="text-xs uppercase tracking-widest mb-2 text-neutral-500 group-focus-within:text-amber-500 transition-colors">Name</label>
             <input
