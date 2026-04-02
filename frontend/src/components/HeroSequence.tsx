@@ -7,128 +7,91 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function HeroSequence() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const context = canvas?.getContext('2d');
-    if (!canvas || !context) return;
-
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resizeCanvas();
-
-    const frameCount = 300;
-    const currentFrame = (index: number) =>
-      `/assets/frames/ezgif-frame-${(index + 1).toString().padStart(3, '0')}.jpg`;
-
-    const images: HTMLImageElement[] = [];
-    const imageSeq = { frame: 0 };
-
-    // Preload images
-    for (let i = 0; i < frameCount; i++) {
-      const img = new Image();
-      img.src = currentFrame(i);
-      images.push(img);
-    }
-
-    const render = () => {
-      const img = images[imageSeq.frame];
-      if (img && img.complete) {
-        // Calculate crop/scale to cover the canvas like object-fit: cover
-        const hRatio = canvas.width / img.width;
-        const vRatio = canvas.height / img.height;
-        const ratio = Math.max(hRatio, vRatio);
-        const centerShift_x = (canvas.width - img.width * ratio) / 2;
-        const centerShift_y = (canvas.height - img.height * ratio) / 2;
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(
-          img,
-          0,
-          0,
-          img.width,
-          img.height,
-          centerShift_x,
-          centerShift_y,
-          img.width * ratio,
-          img.height * ratio
-        );
-      }
-    };
-
-    images[0].onload = render;
-
     let handleMouseMove: (e: MouseEvent) => void;
-    let handleResize: () => void;
+    let ctx: gsap.Context;
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: '+=400%', // Decreased scroll distance so frames pass by faster (higher perceived FPS)
-          scrub: 0.5, // Reduced scrub delay for tighter, faster frame updates
-          pin: true,
-        },
-      });
+    const setupAnimation = () => {
+      const video = videoRef.current;
+      if (!video) return;
 
-      tl.to(imageSeq, {
-        frame: frameCount - 1,
-        snap: 'frame',
-        ease: 'none',
-        onUpdate: render,
-      });
+      // Ensure video is ready before setting up the timeline
+      if (Number.isNaN(video.duration)) {
+        video.addEventListener('loadedmetadata', setupAnimation, { once: true });
+        return;
+      }
 
-      // Handle mouse movement for 3D parallax effect
-      handleMouseMove = (e: MouseEvent) => {
-        if (!canvasRef.current || !textRef.current) return;
-        
-        // Calculate mouse position relative to center (-1 to 1)
-        const x = (e.clientX / window.innerWidth - 0.5) * 2;
-        const y = (e.clientY / window.innerHeight - 0.5) * 2;
-
-        // Animate canvas slightly opposite to mouse, scaled up to prevent edge clipping
-        gsap.to(canvasRef.current, {
-          x: x * 30,
-          y: y * 30,
-          scale: 1.05,
-          rotationY: y * -2,
-          rotationX: x * 2,
-          duration: 1.5,
-          ease: 'power3.out',
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top top',
+            end: '+=400%', // Scroll distance
+            scrub: 0.5, // Smooth scrubbing
+            pin: true,
+          },
         });
 
-        // Animate text heavily in direction of mouse for strong 3D depth
-        gsap.to(textRef.current, {
-          x: x * -50,
-          y: y * -50,
-          rotationY: y * -5,
-          rotationX: x * 5,
-          duration: 1.5,
-          ease: 'power3.out',
-        });
-      };
+        // Scrub video timeline
+        tl.fromTo(
+          video,
+          { currentTime: 0 },
+          { 
+            currentTime: video.duration,
+            ease: 'none'
+          }
+        );
 
-      handleResize = () => {
-        resizeCanvas();
-        render();
-      };
+        // Handle mouse movement for 3D parallax effect
+        handleMouseMove = (e: MouseEvent) => {
+          if (!videoRef.current || !textRef.current) return;
+          
+          // Calculate mouse position relative to center (-1 to 1)
+          const x = (e.clientX / window.innerWidth - 0.5) * 2;
+          const y = (e.clientY / window.innerHeight - 0.5) * 2;
 
-      window.addEventListener('resize', handleResize);
-      window.addEventListener('mousemove', handleMouseMove);
+          // Animate video slightly opposite to mouse, scaled up to prevent edge clipping
+          gsap.to(videoRef.current, {
+            x: x * 30,
+            y: y * 30,
+            scale: 1.05,
+            rotationY: y * -2,
+            rotationX: x * 2,
+            duration: 1.5,
+            ease: 'power3.out',
+          });
 
-      // Initial scale up for canvas to prevent edges showing during parallax
-      gsap.set(canvasRef.current, { scale: 1.05 });
-    }, containerRef);
+          // Animate text heavily in direction of mouse for strong 3D depth
+          gsap.to(textRef.current, {
+            x: x * -50,
+            y: y * -50,
+            rotationY: y * -5,
+            rotationX: x * 5,
+            duration: 1.5,
+            ease: 'power3.out',
+          });
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+
+        // Initial scale up for video to prevent edges showing during parallax
+        gsap.set(videoRef.current, { scale: 1.05 });
+      }, containerRef);
+    };
+
+    setupAnimation();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-      ctx.revert();
+      if (handleMouseMove) {
+        window.removeEventListener('mousemove', handleMouseMove);
+      }
+      if (ctx) {
+        ctx.revert();
+      }
     };
   }, []);
 
@@ -137,9 +100,13 @@ export default function HeroSequence() {
       ref={containerRef} 
       className="relative z-0 h-screen w-full bg-black overflow-hidden perspective-[1000px]"
     >
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full z-0 opacity-80 origin-center"
+      <video
+        ref={videoRef}
+        src="/assets/assetmizu.mp4"
+        className="absolute inset-0 w-full h-full z-0 opacity-80 object-cover origin-center"
+        muted
+        playsInline
+        preload="metadata"
       />
       <div className="absolute inset-0 z-10 bg-black/30 pointer-events-none" />
       <div 

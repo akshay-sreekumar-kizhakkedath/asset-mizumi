@@ -42,7 +42,8 @@ export default function Amenities() {
 
         gsap.to(card, {
           scale: 0.9,
-          opacity: 0.3,
+          // opacity: 0.3, // Removed to prevent weird blending
+          filter: 'brightness(0.4)', // Darken instead of making transparent
           ease: 'none',
           scrollTrigger: {
             trigger: cards[index + 1],
@@ -58,7 +59,7 @@ export default function Amenities() {
   }, []);
 
   return (
-    <section ref={containerRef} className="py-32 bg-neutral-950 text-white relative">
+    <section id="amenities" ref={containerRef} className="py-32 bg-neutral-950 text-white relative">
       <div className="max-w-7xl mx-auto px-6 mb-32 text-center relative z-10">
         <h2 className="text-sm tracking-[0.3em] text-amber-500 uppercase mb-4">World-Class Amenities</h2>
         <h3 className="text-5xl md:text-7xl font-serif text-white/90">Life made luxurious</h3>
@@ -75,7 +76,8 @@ export default function Amenities() {
             className="amenity-card sticky w-full rounded-3xl overflow-hidden shadow-[0_-20px_50px_rgba(0,0,0,0.5)] border border-white/10 origin-top bg-black"
             style={{ 
               top: '15vh',
-              height: '70vh'
+              height: '70vh',
+              zIndex: i + 10 // Ensure proper stacking
             }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}

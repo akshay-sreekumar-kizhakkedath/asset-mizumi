@@ -51,7 +51,7 @@ export default function Highlights() {
   const loopItems = [...highlights, ...highlights];
 
   return (
-    <section ref={containerRef} className="py-32 w-full bg-neutral-900 overflow-hidden flex flex-col justify-center">
+    <section id="highlights" ref={containerRef} className="py-32 w-full bg-neutral-900 overflow-hidden flex flex-col justify-center">
       <div className="px-12 md:px-24 mb-16 shrink-0 relative z-10">
         <h2 className="text-4xl md:text-5xl font-serif text-white tracking-wide uppercase">Highlights</h2>
       </div>

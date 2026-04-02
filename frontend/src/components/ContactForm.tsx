@@ -2,7 +2,7 @@
 
 export default function ContactForm() {
   return (
-    <section className="py-40 bg-neutral-950 relative overflow-hidden flex flex-col items-center">
+    <section id="contact" className="py-40 bg-neutral-950 relative overflow-hidden flex flex-col items-center">
       {/* Background blur effect */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -50,9 +50,11 @@ export default function ContactForm() {
           </div>
 
           <div className="md:col-span-2 flex justify-center mt-12">
-            <button className="relative group px-12 py-5 overflow-hidden rounded-none border border-neutral-800 bg-black hover:border-amber-500 transition-all duration-500">
-              <span className="absolute inset-0 w-full h-full -mt-1 rounded-none opacity-30 bg-gradient-to-b from-transparent via-transparent to-amber-500 pointer-events-none" />
-              <span className="relative z-10 font-sans tracking-[0.2em] text-sm uppercase text-white group-hover:text-amber-500 transition-colors">
+            <button className="relative group px-16 py-6 overflow-hidden rounded-sm border border-neutral-700 bg-black hover:border-amber-500 transition-all duration-500">
+              {/* Very pronounced golden gradient at the bottom edge */}
+              <span className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#c97412] to-transparent pointer-events-none opacity-90 group-hover:opacity-100 transition-opacity duration-500" />
+              {/* Text */}
+              <span className="relative z-10 font-sans font-bold tracking-[0.25em] text-sm uppercase text-white">
                 Enquire Now
               </span>
             </button>

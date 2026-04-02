@@ -2,7 +2,10 @@ import HeroSequence from '@/components/HeroSequence';
 import Introduction from '@/components/Introduction';
 import Highlights from '@/components/Highlights';
 import Amenities from '@/components/Amenities';
+import Gallery from '@/components/Gallery';
+import MasterPlan from '@/components/MasterPlan';
 import ContactForm from '@/components/ContactForm';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
@@ -20,8 +23,15 @@ export default function Home() {
         <Amenities />
       </div>
       <div className="relative z-40 bg-neutral-950">
+        <Gallery />
+      </div>
+      <div className="relative z-40 bg-neutral-900">
+        <MasterPlan />
+      </div>
+      <div className="relative z-40 bg-neutral-950">
         <ContactForm />
       </div>
+      <Footer />
     </main>
   );
 }

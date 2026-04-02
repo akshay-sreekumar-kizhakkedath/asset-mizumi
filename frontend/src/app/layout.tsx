@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import SmoothScroll from '@/components/SmoothScroll'
+import Navbar from '@/components/Navbar'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-serif' })
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark scroll-smooth">
       <body className={`${inter.variable} ${playfair.variable} bg-neutral-950 text-neutral-100 font-sans antialiased overflow-x-hidden min-h-full flex flex-col`}>
+        <Navbar />
         <SmoothScroll>
           {children}
         </SmoothScroll>
