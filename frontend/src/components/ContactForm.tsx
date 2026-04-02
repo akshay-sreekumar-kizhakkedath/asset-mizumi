@@ -1,5 +1,7 @@
 'use client';
 
+import { ArrowUpRight } from 'lucide-react';
+
 export default function ContactForm() {
   return (
     <section id="contact" className="py-40 bg-background dark:bg-neutral-950 relative overflow-hidden flex flex-col items-center">
@@ -50,12 +52,23 @@ export default function ContactForm() {
           </div>
 
           <div className="md:col-span-2 flex justify-center mt-12">
-            <button className="relative group px-16 py-6 overflow-hidden rounded-sm border border-neutral-300 dark:border-neutral-700 bg-white/90 dark:bg-black hover:border-amber-500 transition-all duration-500">
-              {/* Very pronounced golden gradient at the bottom edge */}
-              <span className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#c97412] to-transparent pointer-events-none opacity-90 group-hover:opacity-100 transition-opacity duration-500" />
+            <button className="relative flex items-center gap-6 px-10 py-5 overflow-hidden rounded-full border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-black group hover:border-amber-500 transition-colors duration-500 hover:shadow-[0_0_40px_rgba(217,119,6,0.15)]">
+              {/* Amber slide background */}
+              <span className="absolute inset-0 bg-amber-500 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] pointer-events-none rounded-full" />
+              
               {/* Text */}
-              <span className="relative z-10 font-sans font-bold tracking-[0.25em] text-sm uppercase text-black dark:text-white">
+              <span className="relative z-10 font-sans font-medium tracking-[0.2em] text-sm uppercase text-neutral-900 dark:text-white group-hover:text-black transition-colors duration-700">
                 Enquire Now
+              </span>
+              
+              {/* Animated Icon */}
+              <span className="relative z-10 flex items-center justify-center w-10 h-10 rounded-full bg-neutral-100 dark:bg-neutral-900 text-neutral-900 dark:text-white group-hover:bg-black group-hover:text-amber-500 transition-colors duration-700 overflow-hidden">
+                <span className="absolute transition-transform duration-500 ease-in-out group-hover:-translate-y-[150%] group-hover:translate-x-[150%]">
+                  <ArrowUpRight className="w-5 h-5" />
+                </span>
+                <span className="absolute translate-y-[150%] -translate-x-[150%] transition-transform duration-500 ease-in-out group-hover:translate-y-0 group-hover:translate-x-0">
+                  <ArrowUpRight className="w-5 h-5" />
+                </span>
               </span>
             </button>
           </div>
