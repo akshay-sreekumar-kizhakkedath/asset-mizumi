@@ -8,6 +8,11 @@
 }
 
 :root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+}
+
+.dark, [data-theme='dark'] {
   --background: #0a0a0a;
   --foreground: #ededed;
 }
@@ -23,13 +28,19 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: #ccc;
   border-radius: 4px;
 }
+.dark ::-webkit-scrollbar-thumb, [data-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: #333;
+}
 ::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+.dark ::-webkit-scrollbar-thumb:hover, [data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 

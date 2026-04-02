@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getAssetPath } from '@/lib/assetPath';
+import { ThemeToggle } from './ThemeToggle';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -69,19 +70,23 @@ export default function Navbar() {
           >
             Enquire
           </button>
+          <ThemeToggle />
         </nav>
 
         {/* Mobile Menu Button (simplified for now) */}
-        <button 
-          className="md:hidden text-neutral-300 hover:text-amber-500 transition-colors"
-          aria-label="Menu"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
+        <div className="flex md:hidden items-center gap-4">
+          <ThemeToggle />
+          <button 
+            className="text-neutral-300 hover:text-amber-500 transition-colors"
+            aria-label="Menu"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
       </div>
     </header>
   );
