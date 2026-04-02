@@ -98,7 +98,7 @@ export default function HeroSequence() {
   return (
     <section 
       ref={containerRef} 
-      className="relative z-0 h-screen w-full bg-white dark:bg-black overflow-hidden perspective-[1000px]"
+      className="relative z-0 h-screen w-full bg-[#f8f7f5] dark:bg-black overflow-hidden perspective-[1000px]"
     >
       <video
         ref={videoRef}
@@ -109,15 +109,15 @@ export default function HeroSequence() {
         muted
         playsInline
       />
-      <div className="absolute inset-0 z-10 bg-white/30 dark:bg-black/30 pointer-events-none" />
+      <div className="absolute inset-0 z-10 bg-[#f8f7f5]/30 dark:bg-black/30 pointer-events-none" />
       <div 
         ref={textRef} 
         className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none origin-center"
       >
-        <h1 className="text-5xl md:text-7xl lg:text-[10rem] font-serif text-black dark:text-white uppercase tracking-tighter text-center max-w-6xl leading-[0.85] drop-shadow-2xl">
+        <h1 className="text-5xl md:text-7xl lg:text-[10rem] font-serif text-neutral-900 dark:text-white uppercase tracking-tighter text-center max-w-6xl leading-[0.85] drop-shadow-2xl">
           The<br/> <span className="italic">Have-It-All</span><br/> Habitat.
         </h1>
-        <p className="mt-12 text-lg md:text-xl text-black/80 dark:text-white/80 font-sans tracking-[0.4em] uppercase drop-shadow-lg">
+        <p className="mt-12 text-lg md:text-xl text-neutral-900/80 dark:text-white/80 font-sans tracking-[0.4em] uppercase drop-shadow-lg">
           Mizumi Reserve
         </p>
       </div>

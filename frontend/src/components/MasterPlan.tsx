@@ -30,13 +30,13 @@ export default function MasterPlan() {
   }, []);
 
   return (
-    <section ref={containerRef} className="h-screen w-full bg-neutral-100 dark:bg-neutral-900 relative overflow-hidden flex items-center justify-center">
-      <div className="absolute inset-0 z-0 bg-white/40 dark:bg-black/40" />
+    <section ref={containerRef} className="h-screen w-full bg-background dark:bg-neutral-900 relative overflow-hidden flex items-center justify-center">
+      <div className="absolute inset-0 z-0 bg-white/60 dark:bg-black/40" />
 
       {/* Decorative text overlaid on pinned image */}
       <div className="absolute top-16 left-6 md:left-12 z-20 pointer-events-none">
         <h2 className="text-sm tracking-[0.3em] text-amber-500 uppercase mb-2">Master Plan</h2>
-        <h3 className="text-4xl md:text-6xl font-serif text-black/90 dark:text-white/90 drop-shadow-2xl">
+        <h3 className="text-4xl md:text-6xl font-serif text-neutral-900 dark:text-white/90 drop-shadow-2xl">
           Designed for <br/> Flow
         </h3>
       </div>

@@ -60,10 +60,10 @@ export default function Amenities() {
   }, []);
 
   return (
-    <section id="amenities" ref={containerRef} className="py-32 bg-neutral-50 dark:bg-neutral-950 text-black dark:text-white relative">
+    <section id="amenities" ref={containerRef} className="py-32 bg-background dark:bg-neutral-950 text-neutral-900 dark:text-white relative">
       <div className="max-w-7xl mx-auto px-6 mb-32 text-center relative z-10">
         <h2 className="text-sm tracking-[0.3em] text-amber-500 uppercase mb-4">World-Class Amenities</h2>
-        <h3 className="text-5xl md:text-7xl font-serif text-black/90 dark:text-white/90">Life made luxurious</h3>
+        <h3 className="text-5xl md:text-7xl font-serif text-neutral-900 dark:text-white/90">Life made luxurious</h3>
         <p className="mt-8 text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto text-lg leading-relaxed">
           Mizumi Reserve boasts of over 31 indoor and outdoor amenities curated to elevate every part of your life.
         </p>
@@ -74,7 +74,7 @@ export default function Amenities() {
         {amenities.map((item, i) => (
           <div
             key={i}
-            className="amenity-card sticky w-full rounded-3xl overflow-hidden shadow-[0_-20px_50px_rgba(0,0,0,0.5)] border border-black/10 dark:border-white/10 origin-top bg-white dark:bg-black"
+            className="amenity-card sticky w-full rounded-3xl overflow-hidden shadow-[0_-20px_50px_rgba(0,0,0,0.5)] border border-black/10 dark:border-white/10 origin-top bg-white/90 dark:bg-black"
             style={{ 
               top: '15vh',
               height: '70vh',
@@ -85,15 +85,15 @@ export default function Amenities() {
             <img
               src={item.img}
               alt={item.title}
-              className="absolute inset-0 w-full h-full object-cover object-center grayscale-[0.2] transition-transform duration-1000 hover:scale-105"
+              className="absolute inset-0 w-full h-full object-cover object-center grayscale-[0.2] dark:grayscale-0 transition-transform duration-1000 hover:scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/40 to-transparent dark:from-black/90 dark:via-black/20 dark:to-transparent pointer-events-none" />
             
             <div className="absolute inset-0 p-8 md:p-16 flex flex-col justify-end pointer-events-none">
               <span className="text-amber-500 font-mono tracking-widest text-sm mb-4">
                 0{i + 1}
               </span>
-              <h4 className="text-4xl md:text-6xl font-serif text-black dark:text-white mb-6 uppercase tracking-wide">
+              <h4 className="text-4xl md:text-6xl font-serif text-neutral-900 dark:text-white mb-6 uppercase tracking-wide">
                 {item.title}
               </h4>
               <p className="text-lg md:text-xl text-neutral-700 dark:text-neutral-300 max-w-2xl font-sans leading-relaxed">
