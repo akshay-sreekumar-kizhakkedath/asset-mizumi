@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { getAssetPath } from '@/lib/assetPath';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,22 +11,22 @@ const highlights = [
   {
     title: '~ 80 acres',
     desc: 'Space is more a way of life than an indulgence. Designed for life to breathe, this is where your home grows with you.',
-    img: '/assets/image1.webp',
+    img: getAssetPath('/assets/image1.webp'),
   },
-  {
-    title: '3 & 4 BHK Luxury Apartments',
-    desc: 'Luxurious, expansive units - each thoughtfully crafted to evolve with the life you’re building.',
-    img: '/assets/image2.webp',
-  },
+   {
+     title: '3 & 4 BHK Luxury Apartments',
+     desc: "Luxurious, expansive units - each thoughtfully crafted to evolve with the life you're building.",
+     img: getAssetPath('/assets/image2.webp'),
+   },
   {
     title: '~ 77% Open Space',
     desc: 'Wide open spaces designed to help you connect - to the community, to nature and to yourself.',
-    img: '/assets/image3.webp',
+    img: getAssetPath('/assets/image3.webp'),
   },
   {
     title: '30+ World-class Amenities',
     desc: 'Amenities on par with international standards that make everyday living not just convenient, but a joyful experience.',
-    img: '/assets/image4.webp',
+    img: getAssetPath('/assets/image4.webp'),
   },
 ];
 

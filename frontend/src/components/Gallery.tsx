@@ -3,16 +3,17 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { getAssetPath } from '@/lib/assetPath';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const galleryImages = [
-  '/assets/69662b908257c.webp',
-  '/assets/69858f8b08e48.webp',
-  '/assets/69858f8b8d4e0.webp',
-  '/assets/69858f8d83a95.webp',
-  '/assets/MR_Gallery%20img%209.webp',
-  '/assets/3bhk-type2.webp',
+  getAssetPath('/assets/69662b908257c.webp'),
+  getAssetPath('/assets/69858f8b08e48.webp'),
+  getAssetPath('/assets/69858f8b8d4e0.webp'),
+  getAssetPath('/assets/69858f8d83a95.webp'),
+  getAssetPath('/assets/MR_Gallery%20img%209.webp'),
+  getAssetPath('/assets/3bhk-type2.webp'),
 ];
 
 export default function Gallery() {

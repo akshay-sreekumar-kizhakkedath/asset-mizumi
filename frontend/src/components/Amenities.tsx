@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { getAssetPath } from '@/lib/assetPath';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,22 +11,22 @@ const amenities = [
   {
     title: 'The Clubhouse',
     desc: 'A dedicated 63,000+ sq. ft. clubhouse boasting a plethora of luxurious amenities for recreation and leisure.',
-    img: '/assets/b1.jpg',
+    img: getAssetPath('/assets/b1.jpg'),
   },
   {
     title: 'Grand Arrival',
     desc: 'Gates that proudly speak of the world within, entrances that feel worthy of the red carpet.',
-    img: '/assets/image-1.webp',
+    img: getAssetPath('/assets/image-1.webp'),
   },
   {
     title: 'Socially-enabled',
     desc: 'Designed for connection. Designed for community. Designed for everyone.',
-    img: '/assets/b2.jpg',
+    img: getAssetPath('/assets/b2.jpg'),
   },
   {
     title: 'Distinctive Façade',
     desc: 'Where every colour, pattern, texture and material invites you to explore the soul of the space within.',
-    img: '/assets/image-2.webp',
+    img: getAssetPath('/assets/image-2.webp'),
   },
 ];
 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getAssetPath } from '@/lib/assetPath';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -39,9 +40,9 @@ export default function Navbar() {
         <Link href="/" className="flex flex-col items-start group relative transition-transform duration-500 hover:scale-105">
           <div className="absolute inset-0 bg-amber-500/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img 
-            src="/assets/mezumi-footer-logo.png" 
-            alt="Mizumi Reserve Logo" 
+           <img 
+             src={getAssetPath("/assets/mezumi-footer-logo.png")} 
+             alt="Mizumi Reserve Logo"
             className="h-10 md:h-12 w-auto object-contain relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] group-hover:drop-shadow-[0_0_25px_rgba(217,119,6,0.4)] transition-all duration-500"
           />
         </Link>

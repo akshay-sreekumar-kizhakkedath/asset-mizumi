@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { getAssetPath } from '@/lib/assetPath';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -101,7 +102,7 @@ export default function HeroSequence() {
     >
       <video
         ref={videoRef}
-        src="/assets/assetmizu.mp4"
+        src={getAssetPath("/assets/assetmizu.mp4")}
         className="absolute inset-0 w-full h-full z-0 opacity-80 object-cover origin-center"
         autoPlay
         loop

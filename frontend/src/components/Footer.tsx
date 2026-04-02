@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { getAssetPath } from '@/lib/assetPath';
 
 export default function Footer() {
   return (
@@ -13,7 +14,7 @@ export default function Footer() {
         <div className="col-span-1 md:col-span-2 flex flex-col gap-6">
           <Link href="/" className="inline-block hover:opacity-80 transition-opacity">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/assets/Assetz-Logo-White.png" alt="Assetz Logo" className="h-16 w-auto object-contain opacity-90" />
+            <img src={getAssetPath("/assets/Assetz-Logo-White.png")} alt="Assetz Logo" className="h-16 w-auto object-contain opacity-90" />
           </Link>
           <p className="font-serif text-3xl text-white tracking-wide mt-4">
             MIZUMI <br/>

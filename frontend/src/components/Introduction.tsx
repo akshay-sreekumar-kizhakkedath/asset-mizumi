@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { getAssetPath } from '@/lib/assetPath';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -42,7 +43,7 @@ export default function Introduction() {
         muted
         playsInline
         className="absolute inset-0 w-full h-full object-cover opacity-30 object-center pointer-events-none grayscale-[0.5]"
-        src="/assets/irNMINhjHivYfZ5leP0kD7AcPAiZpDlZzYaII7Xk.mp4"
+        src={getAssetPath("/assets/irNMINhjHivYfZ5leP0kD7AcPAiZpDlZzYaII7Xk.mp4")}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-neutral-950 z-0 pointer-events-none" />
 

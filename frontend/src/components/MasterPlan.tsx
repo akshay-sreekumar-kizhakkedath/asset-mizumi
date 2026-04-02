@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { getAssetPath } from '@/lib/assetPath';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -44,7 +45,7 @@ export default function MasterPlan() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         ref={imageRef}
-        src="/assets/MR-Master-plan.png"
+        src={getAssetPath("/assets/MR-Master-plan.png")}
         alt="Master Plan"
         className="w-full h-full object-contain md:object-cover origin-center z-10 p-8 md:p-0"
       />
