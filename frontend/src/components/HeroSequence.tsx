@@ -12,86 +12,80 @@ export default function HeroSequence() {
   const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
     let handleMouseMove: (e: MouseEvent) => void;
-    let ctx: gsap.Context;
 
-    const setupAnimation = () => {
-      const video = videoRef.current;
-      if (!video) return;
+    const ctx = gsap.context(() => {
+      // Pin the hero section and play video during scroll
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top top',
+          end: '+=150%', // Scroll distance
+          scrub: 1, // Smooth linking to scroll
+          pin: true,
+        },
+      });
 
-      // Ensure video is ready before setting up the timeline
-      if (Number.isNaN(video.duration)) {
-        video.addEventListener('loadedmetadata', setupAnimation, { once: true });
-        return;
-      }
+      // Fade out text as user scrolls
+      tl.to(
+        textRef.current,
+        {
+          opacity: 0,
+          y: -100,
+          ease: 'none',
+        },
+        0
+      );
 
-      ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top top',
-            end: '+=400%', // Scroll distance
-            scrub: 0.5, // Smooth scrubbing
-            pin: true,
-          },
+      // Zoom out video as user scrolls
+      tl.to(
+        videoRef.current,
+        {
+          scale: 0.9,
+          ease: 'none',
+        },
+        0
+      );
+
+      // Handle mouse movement for 3D parallax effect
+      handleMouseMove = (e: MouseEvent) => {
+        if (!videoRef.current || !textRef.current) return;
+        
+        const x = (e.clientX / window.innerWidth - 0.5) * 2;
+        const y = (e.clientY / window.innerHeight - 0.5) * 2;
+
+        gsap.to(videoRef.current, {
+          x: x * 30,
+          y: y * 30,
+          scale: 1.05,
+          rotationY: y * -2,
+          rotationX: x * 2,
+          duration: 1.5,
+          ease: 'power3.out',
         });
 
-        // Scrub video timeline
-        tl.fromTo(
-          video,
-          { currentTime: 0 },
-          { 
-            currentTime: video.duration,
-            ease: 'none'
-          }
-        );
+        gsap.to(textRef.current, {
+          x: x * -50,
+          y: y * -50,
+          rotationY: y * -5,
+          rotationX: x * 5,
+          duration: 1.5,
+          ease: 'power3.out',
+        });
+      };
 
-        // Handle mouse movement for 3D parallax effect
-        handleMouseMove = (e: MouseEvent) => {
-          if (!videoRef.current || !textRef.current) return;
-          
-          // Calculate mouse position relative to center (-1 to 1)
-          const x = (e.clientX / window.innerWidth - 0.5) * 2;
-          const y = (e.clientY / window.innerHeight - 0.5) * 2;
-
-          // Animate video slightly opposite to mouse, scaled up to prevent edge clipping
-          gsap.to(videoRef.current, {
-            x: x * 30,
-            y: y * 30,
-            scale: 1.05,
-            rotationY: y * -2,
-            rotationX: x * 2,
-            duration: 1.5,
-            ease: 'power3.out',
-          });
-
-          // Animate text heavily in direction of mouse for strong 3D depth
-          gsap.to(textRef.current, {
-            x: x * -50,
-            y: y * -50,
-            rotationY: y * -5,
-            rotationX: x * 5,
-            duration: 1.5,
-            ease: 'power3.out',
-          });
-        };
-
-        window.addEventListener('mousemove', handleMouseMove);
-
-        // Initial scale up for video to prevent edges showing during parallax
-        gsap.set(videoRef.current, { scale: 1.05 });
-      }, containerRef);
-    };
-
-    setupAnimation();
+      window.addEventListener('mousemove', handleMouseMove);
+      gsap.set(videoRef.current, { scale: 1.05 });
+    }, containerRef);
 
     return () => {
       if (handleMouseMove) {
         window.removeEventListener('mousemove', handleMouseMove);
       }
-      if (ctx) {
-        ctx.revert();
-      }
+      ctx.revert();
     };
   }, []);
 
@@ -104,9 +98,10 @@ export default function HeroSequence() {
         ref={videoRef}
         src="/assets/assetmizu.mp4"
         className="absolute inset-0 w-full h-full z-0 opacity-80 object-cover origin-center"
+        autoPlay
+        loop
         muted
         playsInline
-        preload="metadata"
       />
       <div className="absolute inset-0 z-10 bg-black/30 pointer-events-none" />
       <div 
