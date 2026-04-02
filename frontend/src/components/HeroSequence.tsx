@@ -103,13 +103,13 @@ export default function HeroSequence() {
       <video
         ref={videoRef}
         src={getAssetPath("/assets/assetmizu.mp4")}
-        className="absolute inset-0 w-full h-full z-0 opacity-80 object-cover origin-center"
+        className="absolute inset-0 w-full h-full z-0 opacity-100 dark:opacity-80 object-cover origin-center"
         autoPlay
         loop
         muted
         playsInline
       />
-      <div className="absolute inset-0 z-10 bg-[#d8e0e8]/30 dark:bg-black/30 pointer-events-none" />
+      <div className="absolute inset-0 z-10 bg-transparent dark:bg-black/30 pointer-events-none" />
       <div 
         ref={textRef} 
         className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none origin-center"

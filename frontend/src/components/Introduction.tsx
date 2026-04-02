@@ -42,10 +42,10 @@ export default function Introduction() {
         loop
         muted
         playsInline
-        className="absolute inset-0 w-full h-full object-cover opacity-30 object-center pointer-events-none grayscale-[0.5]"
+        className="absolute inset-0 w-full h-full object-cover opacity-80 dark:opacity-30 object-center pointer-events-none grayscale-[0.2] dark:grayscale-[0.5]"
         src={getAssetPath("/assets/irNMINhjHivYfZ5leP0kD7AcPAiZpDlZzYaII7Xk.mp4")}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-background dark:from-neutral-950 via-transparent to-background dark:to-neutral-950 z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background dark:from-neutral-950 via-transparent to-background dark:to-neutral-950 opacity-80 dark:opacity-100 z-0 pointer-events-none" />
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto flex flex-col items-center">

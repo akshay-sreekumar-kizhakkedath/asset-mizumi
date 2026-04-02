@@ -31,7 +31,7 @@ export default function MasterPlan() {
 
   return (
     <section ref={containerRef} className="h-screen w-full bg-background dark:bg-neutral-900 relative overflow-hidden flex items-center justify-center">
-      <div className="absolute inset-0 z-0 bg-white/60 dark:bg-black/40" />
+      <div className="absolute inset-0 z-0 bg-white/10 dark:bg-black/40" />
 
       {/* Decorative text overlaid on pinned image */}
       <div className="absolute top-16 left-6 md:left-12 z-20 pointer-events-none">
