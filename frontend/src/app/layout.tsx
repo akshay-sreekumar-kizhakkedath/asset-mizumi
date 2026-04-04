@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body className={`${inter.variable} ${playfair.variable} bg-background text-foreground font-sans antialiased overflow-x-hidden min-h-full flex flex-col transition-colors duration-300`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider attribute="class" forcedTheme="dark">
           <Navbar />
           <SmoothScroll>
             {children}

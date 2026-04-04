@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getAssetPath } from '@/lib/assetPath';
-import { ThemeToggle } from './ThemeToggle';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -70,12 +69,10 @@ export default function Navbar() {
           >
             Enquire
           </button>
-          <ThemeToggle />
         </nav>
 
         {/* Mobile Menu Button (simplified for now) */}
         <div className="flex md:hidden items-center gap-4">
-          <ThemeToggle />
           <button 
             className="text-neutral-700 dark:text-neutral-300 hover:text-amber-500 transition-colors"
             aria-label="Menu"
